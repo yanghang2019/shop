@@ -1,0 +1,12 @@
+{
+    "settings": {
+        "import/resolver": {
+            "alias": {
+                "map": [
+                    ["@", "./views"]
+                ],
+                "extensions": [".js", ".jsx", ".json", "tsx"]
+            }
+        }
+    }
+}
