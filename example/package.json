@@ -6,7 +6,8 @@
     "scripts": {
         "probuild": "webpack --progress --colors --config webpack.production.config.js",
         "devbuild": "webpack --progress --colors --config webpack.development.config.js",
-        "dev": "webpack-dev-server --progress --colors --content-base build --config webpack.development.config.js"
+        "dev": "webpack-dev-server --progress --colors --content-base build --config webpack.development.config.js",
+        "build": "webpack --config webpack_dll.config.js"
     },
     "author": "",
     "license": "ISC",
