@@ -26,6 +26,15 @@ export class SiderDemo extends React.Component<SiderDemoProps, SiderDemoStates> 
 			collapsed: !this.state.collapsed,
 		});
 	}
+	componentDidMount() {
+		fetch('http://example.com/movies.json')
+			.then(function (response) {
+				return response.json();
+			})
+			.then(function (myJson) {
+				console.log(myJson);
+			});
+	}
 
 	handleSelMenu = (value) => {
 		this.setState({

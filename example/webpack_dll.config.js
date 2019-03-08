@@ -6,13 +6,13 @@ module.exports = {
     },
     output: {
         filename: '[name].dll.js',
-        path: path.resolve(__dirname, './dist'),
+        path: path.resolve(__dirname, './dll'),
         library: '_dll_[name]', //dll的全局变量名
     },
     plugins: [
         new DllPlugin({
             name: '_dll_[name]', //dll的全局变量名
-            path: path.join(__dirname, './dist', '[name].manifest.json'), //描述生成的manifest文件
+            path: path.join(__dirname, './dll', '[name].manifest.json'), //描述生成的manifest文件
         })
     ]
 }

@@ -6,7 +6,7 @@ const HappyPack = require("happypack");
 const os = require("os");
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
-const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
+const DllReferencePlugin = require("webpack/lib/DllReferencePlugin");
 
 const UglifyJParallerPlugin = require("webpack-uglify-parallel")
     // const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
@@ -176,18 +176,23 @@ module.exports = {
             id: 'happybabel',
             loaders: ["babel-loader"],
             threadPool: happyThreadPool,
-            cache: true,
+            //cache: true,
             //verbose: true
         }),
         new UglifyJParallerPlugin({
             workes: os.cpus().length
         }),
 
+        new DllReferencePlugin({
+            //要指定路径
+            context: __dirname,
+            manifest: require('./dll/react.dll.js')
+        }),
+
         // new DllReferencePlugin({
-        //     manifest: require('./dist/react.manifest.json')
-        // }),
-        // new DllReferenctPlugin({
-        //     manifest: require('./dist/polyfill.manifest.json')
+        //     //要指定路径
+        //     context: __dirname,
+        //     manifest: require('./dll/react.manifest.json')
         // })
     ]
 }
