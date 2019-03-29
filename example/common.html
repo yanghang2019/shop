@@ -10,9 +10,198 @@
 <meta name="format-detection" content="telephone=no">
 <title></title>
 </head>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
 
-<body style="background-color: #F0F0F0;margin: 0;height:100%">
+<script>
+    // 1.cors 与corsServer.js有关系
+    // ajax({
+    //     url: "http://localhost:3001",
+    //     method: "get",
+    //     async: true,
+    //     data: null
+    // }).then(
+    //     (res) => {
+    //         console.log("请求成功:", res);
+    //     }
+    // )
+
+    // function ajax(options) {
+    //     let url = options.url || null;
+    //     if (url === null || url.length) {
+    //         new Error("url not Empty");
+    //     }
+    //     const method = options.method || "get";
+    //     const async = options.async || false;
+    //     const data = options.data || null;
+    //     let xhr = null;
+    //     if (window.XMLHttpRequest) {
+    //         xhr = new XMLHttpRequest();
+    //     } else if (window.ActiveXObject) {
+    //         xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    //     }
+    //     return new Promise((resolve, reject) => {
+
+    //         //todo
+    //         xhr.ontimeout = () => reject && reject("请求超时");
+    //         xhr.onreadystatechange = () => {
+    //             if (xhr.readyState === 4) {
+    //                 if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+    //                     console.log(xhr.responseBody, "body", xhr.responseText);
+    //                     resolve && resolve(xhr.responseText);
+    //                 } else {
+    //                     reject && reject();
+    //                 }
+    //             }
+    //         }
+    //         xhr.onerror = err => reject && reject(err);
+    //         let paramArr = [];
+    //         if (method === "get" && data !== null) {
+    //             if (url.indexOf("?") === -1) {
+    //                 url = url + "?";
+    //             } else {
+    //                 url = url + "&";
+    //             }
+    //             url += encodeParams(data);
+    //         }
+    //         xhr.open(method, url, async);
+    //         if (method === "get") {
+    //             xhr.send(null);
+    //         } else {
+    //             // xhr.setRequestHeader
+    //             xhr.send(encodeParams(data));
+    //         }
+    //     })
+    // }
+
+    // function encodeParams(data) {
+
+    //     if (!Array.isArray(data) && data instanceof Object) {
+    //         for (let key in data) {
+    //             //对参数进行编码
+    //             paramArr.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+    //         }
+    //         return paramArr.join("&");
+    //     }
+    //     return null;
+    // }
+
+
+    // 2.nginx反向代理 与nginx.js有关系
+    // $.ajax({
+    //     url: "http://localhost:3003",
+    //     type: "post",
+    //     success: function(result) {
+    //         console.log("nginx转发获得的结果:", result)
+    //     },
+    //     error: function(msg) {
+    //         console.log(msg);
+    //     }
+    // })
+
+    //3.postmessage expamle和test文件有关，当前是二师弟窗口
+    // function loadIframe() {
+    //     let frame = document.getElementById("frame");
+    //     let target = "http://localhost:8083";
+    //     console.log("呼叫大师兄");
+    //     frame.contentWindow.postMessage("大师兄", target);
+    //     window.onmessage = function(e) {
+    //         // For Chrome, the origin property is in the event.originalEvent
+    //         // object. 
+    //         // 这里不准确，chrome没有这个属性
+    //         // var origin = event.origin || event.originalEvent.origin; 
+    //         var origin = event.origin;
+    //         if (origin === target) {
+    //             console.log("大师兄发送的消息是：", e.data);
+    //         }
+    //     }
+    // }
+
+
+    // 4. websocket 与某一个网站的人有关系
+    // const socket = new WebSocket("ws://121.40.165.18:8800");
+    // //socket建立连接成功后的回调函数
+    // socket.addEventListener('open', function(event) {
+    //     socket.send('Hello Server!');
+    // });
+
+    // // 监听消息
+    // socket.addEventListener('message', function(event) {
+    //     console.log('Message from server ', event.data);
+    // });
+    // //浏览器的支持不一样，chrome，edge12，火狐支持的比较好
+    // socket.onmessage = function(e) {
+    //     console.log("接受到的消息：", e.data);
+    //     //socket.close(3000, "123mmm");
+    // }
+
+    // socket.onerror = function(e) {
+    //     console.log("接受失败", e.data)
+    // }
+
+    // socket.onclose = function(e) {
+    //     console.log("关闭的原因", e)
+    // }
+    // socket.readyState = function(e) {
+    //     //console.log(e, "ready status");
+    // }
+
+    //5.node中间件  server1.js + server2.js
+    // $.ajax({
+    //     url: "http://localhost:3000",
+    //     type: "get",
+    //     contentType: "application/json;charset=utf-8",
+    //     success: function(result) {
+    //         console.log("我是通过node中间件处理的跨域请求:", result)
+    //     },
+    //     error: function(msg) {
+    //         console.log(msg);
+    //     }
+    // })
+
+
+    // 6.jsonp   jsonpServer.js
+    // jsonp({
+    //     url: "http://localhost:3002",
+    //     param: {
+    //         wd: "i love you"
+    //     },
+    //     callback: "show"
+    // }).then(data => {
+    //     console.log("jsonp说：", data);
+    // })
+
+    // function jsonp({
+    //     url,
+    //     param,
+    //     callback
+    // }) {
+    //     return new Promise((resolve, reject) => {
+    //         let script = document.createElement("script");
+    //         let body = document.getElementById("jsonp");
+    //         window[callback] = function(data) {
+    //             resolve(data);
+    //             document.head.removeChild(script);
+    //         }
+    //         param = {...param,
+    //             callback
+    //         };
+    //         let arr = [];
+    //         for (let key in param) {
+    //             let str = key + "=" + param[key];
+    //             arr.push(str);
+    //         }
+    //         script.type = "text/javascript";
+    //         script.src = url + "?" + arr.join("&");
+    //         document.head.appendChild(script);
+    //     })
+    // }
+</script>
+
+<body style="background-color: #F0F0F0;margin: 0;height:100%" id="jsonp">
     <div id="content" style="width: 100%;height:100%"></div>
+    <!-- <iframe src="http://localhost:8083/" frameborder="0" onload="loadIframe()" id="frame">
+       
+    </iframe> -->
 </body>
 
 </html>

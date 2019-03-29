@@ -12,12 +12,15 @@ interface SiderDemoStates {
 	key: string;
 };
 
+const styles = require("./index.scss");
+console.log(styles, "Styles");
+
 export class SiderDemo extends React.Component<SiderDemoProps, SiderDemoStates> {
 	constructor(props) {
 		super(props);
 		this.state = {
 			collapsed: false,
-			key: "1"
+			key: "12"
 		};
 	}
 
@@ -34,7 +37,7 @@ export class SiderDemo extends React.Component<SiderDemoProps, SiderDemoStates> 
 	}
 
 	render() {
-		const { key } = this.state
+		const { key } = this.state;
 		return (
 			<Layout>
 				<Sider

@@ -26,8 +26,22 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, "./build"),
-        filename: "[name].js"
+        filename: "[chunkhash].js"
     },
+
+    //验证是否可以调试
+    devtool: "source-map",
+
+    //监听文件更新，文件变化时重新编译
+    watch: true,
+
+    // watchOptions: {
+    //     ignored: /node_moudules/
+    // },
+
+    // resolveLoader: {
+    //     modules: ["node_modules"]
+    // },
 
     // externals: {
     //     "react": "React",
@@ -35,7 +49,7 @@ module.exports = {
 
     // },
     resolve: {
-        extensions: [".js", ".tsx", ".ts"],
+        extensions: [".tsx", , ".scss", ".js", ".ts"],
         //基于webpack文件所在位置
         alias: {
             views: path.resolve(__dirname, './src/views/'),
@@ -61,12 +75,13 @@ module.exports = {
         noInfo: true,
 
         //打开浏览器
-        open: true
-            // 配置与后台相关的跨域服务器
-            //proxy
-            //inline: false
-            //指定使用一个 host。默认是 localhost。如果你希望服务器外部可访问，指定如下：
-            // host:"0.0.0.0"
+        open: true,
+        // 配置与后台相关的跨域服务器
+        //proxy
+        //inline: false
+        //指定使用一个 host。默认是 localhost。如果你希望服务器外部可访问，指定如下：
+        //host: "10.10.10.21",
+        port: 8082
             //启用 webpack 的模块热替换特性
             //hot: true
     },
@@ -76,30 +91,14 @@ module.exports = {
                 test: /\.(js|ts|tsx)?$/,
                 exclude: /(node_moudles|bower_components)/,
                 use: {
-                    // loader: "babel-loader",
-                    // options: {
-                    //     cacheDirectory: true
-                    // }
                     loader: "happypack/loader?id=happybabel"
                 },
-                include: path.resolve(__dirname, "src"),
                 exclude: path.resolve(__dirname, "node_modules"),
             },
             { test: /\.tsx?$/, loader: "ts-loader" },
             {
                 test: /\.(scss|css|less)$/,
-                use: [{
-                        loader: "style-loader",
-                    }, {
-                        loader: "css-loader"
-                    },
-                    {
-                        loader: "sass-loader",
-                        options: {
-                            cacheDirectory: true
-                        }
-                    }
-                ],
+                use: ["style-loader", "css-loader", "sass-loader"]
             },
             {
                 test: /\.(png|jpg|gif)$/,
@@ -194,16 +193,66 @@ module.exports = {
 
 
 
+//测试node API
+
 // const compiler = webpack({})
 
 // compiler.run((err, stats) => {
+// console.log(stats, "run ======> stats")
+// if (err) {
+//     console.error(err.stack || err);
+//     if (err.details) {
+//         console.error(err.details, "details");
+//     }
+//     return;
+// }
 
-// })
+// const info = stats.toJson();
+
+// if (stats.hasErrors()) {
+//     console.error(info.errors, "Error");
+// }
+
+// if (stats.hasWarnings()) {
+//     console.warn(info.warnings, "warning");
+// }
+//})
 
 // //监听
 // const watching = compiler.watch({
-
+//     aggregateTimeout: 300,
+//     poll: undefined
 // }, (err, stats) => {
+//     console.error(err, 235435346);
+// })
 
-//     console.error("1111111");
-// })new
+// //argv，返回包含启动node.js时输入的执行命令参数
+// process.argv.forEach((val, index) => {
+//     console.log(`${index}: ${val}`, "90");
+// });
+
+// process.on("exit", code => {
+//     process.stdout.write(code);
+// })
+
+// process.on("uncaughtException", err => {
+//     process.stdout.write("捕获的异常", err);
+// });
+
+// //主要监听nodeJS在运行时遇到的警告
+// process.on('warning', (warning) => {
+//     if (warning.name.match("DeprecationWarning")) {
+//         process.stdout.write("Tapable.plugin will Depart");
+//     }
+//     console.warn(warning.name, 123); // 打印告警名称
+//     console.warn(warning.message, 345); // 打印告警信息
+//     console.warn(warning.stack, 789); // 打印堆栈信息
+// });
+
+
+// //当接收到信号的时候会触发这个时间
+// process.on("SIGINT", () => {
+//     process.stdout.write("停止node的运行");
+// })
+
+// // process.stdout.write(process.argv0, "1mmmmm")

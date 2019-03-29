@@ -1,13 +1,13 @@
-// var http = require("http");
+var http = require("http");
 
-// //创建http服务器
-// http.createServer(function (req, res) {
-// 	//写头部head信息和状态编码
-// 	res.writeHead(200, { "Content-type": "text/blain" });
-// 	res.write("Hello NodeJs");
-// 	res.end();
-// }).listen(8888);
-// //listen表示编写接口
+//创建http服务器
+http.createServer(function (req, res) {
+	//写头部head信息和状态编码
+	res.writeHead(200, { "Content-type": "text/blain" });
+	res.write("Hello NodeJs");
+	res.end();
+}).listen(8082);
+//listen表示编写接口
 
 
 
@@ -27,20 +27,20 @@
 
 // fs.read
 
-var events = require("events");
-var eventEmitter = new events.EventEmitter();
+// var events = require("events");
+// var eventEmitter = new events.EventEmitter();
 
-const connectHandle = function connected() {
-	console.log("链接成功");
-	eventEmitter.emit("data_received");
-}
+// const connectHandle = function connected() {
+// 	console.log("链接成功");
+// 	eventEmitter.emit("data_received");
+// }
 
-eventEmitter.on("connection", connectHandle);
+// eventEmitter.on("connection", connectHandle);
 
-eventEmitter.on("data_received", function () {
-	console.log("数据接收成功")
-})
+// eventEmitter.on("data_received", function () {
+// 	console.log("数据接收成功")
+// })
 
-eventEmitter.emit("connection");
+// eventEmitter.emit("connection");
 
-console.log("程序执行完毕")
+// console.log("程序执行完毕")
