@@ -14,76 +14,81 @@
 
 <script>
     // 1.cors 与corsServer.js有关系
-    // ajax({
-    //     url: "http://localhost:3001",
-    //     method: "get",
-    //     async: true,
-    //     data: null
-    // }).then(
-    //     (res) => {
-    //         console.log("请求成功:", res);
-    //     }
-    // )
+    ajax({
+        url: "http://localhost:3001",
+        method: "get",
+        async: true,
+        data: "name=yanghang"
+            // data: {
+            //     name: "yanghang"
+            // }
 
-    // function ajax(options) {
-    //     let url = options.url || null;
-    //     if (url === null || url.length) {
-    //         new Error("url not Empty");
-    //     }
-    //     const method = options.method || "get";
-    //     const async = options.async || false;
-    //     const data = options.data || null;
-    //     let xhr = null;
-    //     if (window.XMLHttpRequest) {
-    //         xhr = new XMLHttpRequest();
-    //     } else if (window.ActiveXObject) {
-    //         xhr = new ActiveXObject("Microsoft.XMLHTTP");
-    //     }
-    //     return new Promise((resolve, reject) => {
+    }).then(
+        (res) => {
+            console.log("请求成功:", res);
+        }
+    )
 
-    //         //todo
-    //         xhr.ontimeout = () => reject && reject("请求超时");
-    //         xhr.onreadystatechange = () => {
-    //             if (xhr.readyState === 4) {
-    //                 if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
-    //                     console.log(xhr.responseBody, "body", xhr.responseText);
-    //                     resolve && resolve(xhr.responseText);
-    //                 } else {
-    //                     reject && reject();
-    //                 }
-    //             }
-    //         }
-    //         xhr.onerror = err => reject && reject(err);
-    //         let paramArr = [];
-    //         if (method === "get" && data !== null) {
-    //             if (url.indexOf("?") === -1) {
-    //                 url = url + "?";
-    //             } else {
-    //                 url = url + "&";
-    //             }
-    //             url += encodeParams(data);
-    //         }
-    //         xhr.open(method, url, async);
-    //         if (method === "get") {
-    //             xhr.send(null);
-    //         } else {
-    //             // xhr.setRequestHeader
-    //             xhr.send(encodeParams(data));
-    //         }
-    //     })
-    // }
+    function ajax(options) {
+        let url = options.url || null;
+        if (url === null || url.length) {
+            new Error("url not Empty");
+        }
+        const method = options.method || "get";
+        const async = options.async || false;
+        const data = options.data || null;
+        let xhr = null;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else if (window.ActiveXObject) {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        return new Promise((resolve, reject) => {
 
-    // function encodeParams(data) {
+            //todo
+            xhr.ontimeout = () => reject && reject("请求超时");
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300 || xhr.status === 304) {
+                        console.log(xhr.responseBody, "body", xhr.responseText);
+                        resolve && resolve(xhr.responseText);
+                    } else {
+                        reject && reject();
+                    }
+                }
+            }
+            xhr.onerror = err => reject && reject(err);
+            let paramArr = [];
+            if (method === "get" && data !== null) {
+                if (url.indexOf("?") === -1) {
+                    url = url + "?";
+                } else {
+                    url = url + "&";
+                }
+                url += encodeParams(data);
+            }
+            xhr.open(method, url, async);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            if (method === "get") {
+                xhr.send(null);
+            } else {
+                // xhr.setRequestHeader
+                xhr.send(encodeParams(data));
+            }
+        })
+    }
 
-    //     if (!Array.isArray(data) && data instanceof Object) {
-    //         for (let key in data) {
-    //             //对参数进行编码
-    //             paramArr.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
-    //         }
-    //         return paramArr.join("&");
-    //     }
-    //     return null;
-    // }
+    function encodeParams(data) {
+
+        if (!Array.isArray(data) && data instanceof Object) {
+            for (let key in data) {
+                //对参数进行编码
+                paramArr.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]));
+            }
+            return paramArr.join("&");
+        }
+        return data;
+    }
 
 
     // 2.nginx反向代理 与nginx.js有关系

@@ -8,15 +8,38 @@ const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 const DllReferencePlugin = require('webpack/lib/DllReferencePlugin');
 
-const UglifyJParallerPlugin = require("webpack-uglify-parallel")
-    // const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
-    // const notifier = require("node-notifier");
+// const UglifyJParallerPlugin = require("webpack-uglify-parallel");
+
+// const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 
 //打包面板插件
 const Dashbord = require("webpack-dashboard");
 const DashbordPlugin = require("webpack-dashboard/plugin");
 const dash = new Dashbord();
+
+// //配置压缩文件
+
+// const uglify = new UglifyJsPlugin({
+
+// })
+
+
+
+
+// module.exports = function(env = {}, argv) {
+//     const plugin = [];
+
+//     const isProduction = env["production"];
+
+//     if (isProduction) {
+//         plugins.push(
+//             new
+//         )
+//     }
+// }
+
+
 
 module.exports = {
     mode: "development",
@@ -35,9 +58,9 @@ module.exports = {
     //监听文件更新，文件变化时重新编译
     watch: true,
 
-    // watchOptions: {
-    //     ignored: /node_moudules/
-    // },
+    watchOptions: {
+        ignored: /node_moudules/
+    },
 
     // resolveLoader: {
     //     modules: ["node_modules"]
@@ -54,14 +77,16 @@ module.exports = {
         alias: {
             views: path.resolve(__dirname, './src/views/'),
             utils: path.resolve(__dirname, "./src/utils/"),
+            'react': path.resolve(__dirname, 'node_modules/react/cjs/react.development. min.js')
         },
         //用来配置文件必须有扩展名
         // enforceExtension:true
 
         //解析文件，从哪个模块开始，分析绝对路径和相对路径
-        modules: [path.resolve(__dirname, "src"), "node_modules"],
+        // modules: [path.resolve(__dirname, "src"), "node_modules"],
+        modules: [path.resolve(__dirname, "node_modules")],
+
         mainFields: ["main"],
-        'react': path.resolve(__dirname, 'node_modules/react/dist/react.min.js'),
         noParse: [/jquery|chartjs/, /react\.min\.js$/]
     },
     devServer: {
@@ -73,7 +98,7 @@ module.exports = {
             "X-Custom-Foo": "bar"
         },
         noInfo: true,
-
+        //cache: true,
         //打开浏览器
         open: true,
         // 配置与后台相关的跨域服务器
@@ -86,19 +111,22 @@ module.exports = {
             //hot: true
     },
     module: {
-        //noparse: [/react\.min\.js$/],
+        noParse: /react\.min\.js$/,
         rules: [{
-                test: /\.(js|ts|tsx)?$/,
+                test: /\.(js|ts|tsx)$/,
                 exclude: /(node_moudles|bower_components)/,
                 use: {
                     loader: "happypack/loader?id=happybabel"
                 },
                 exclude: path.resolve(__dirname, "node_modules"),
             },
-            { test: /\.tsx?$/, loader: "ts-loader" },
+            { test: /\.tsx$/, loader: "ts-loader" },
             {
                 test: /\.(scss|css|less)$/,
-                use: ["style-loader", "css-loader", "sass-loader"]
+                use: {
+                    loader: "happypack/loader?id=css"
+                }
+                // ["style-loader", "css-loader", "sass-loader"]
             },
             {
                 test: /\.(png|jpg|gif)$/,
@@ -132,24 +160,6 @@ module.exports = {
         }
     },
     plugins: [
-        // new FriendlyErrorsWebpackPlugin({
-        //     compilationSuccessInfo: {
-        //         messages: ["You application is running here http://localhost:8080"],
-        //         notes: ["Some additionnal notes to be displayed unpon successful compilation"]
-        //     },
-        //     onErrors: (severity, errors) => {
-        //         if (severity !== "error") {
-        //             return;
-        //         }
-        //         const error = errors[0];
-        //         notifier.notify({
-        //             title: "Webpack error",
-        //             message: severity + ":" + error.name,
-        //             subtitle: error.file || ""
-        //         })
-        //     },
-        //     clearConsole: true
-        // }),
         new webpack.DefinePlugin({ //设置成production去除警告
             'process.env': {
                 NODE_ENV: JSON.stringify("production")
@@ -176,17 +186,18 @@ module.exports = {
             loaders: ["babel-loader"],
             threadPool: happyThreadPool,
             cache: true,
-            //verbose: true
         }),
-        new UglifyJParallerPlugin({
-            workes: os.cpus().length
+        new webpack.NamedModulesPlugin(),
+        new HappyPack({
+            id: 'css',
+            loaders: ["style-loader", "css-loader", "sass-loader"],
+            threadPool: happyThreadPool,
+            cache: true,
         }),
 
-        // new DllReferencePlugin({
-        //     manifest: require('./dist/react.manifest.json')
-        // }),
-        // new DllReferenctPlugin({
-        //     manifest: require('./dist/polyfill.manifest.json')
+        //此文件适用于生产环境打包的时候使用
+        // new UglifyJParallerPlugin({
+        //     workes: os.cpus().length
         // })
     ]
 }

@@ -11,7 +11,8 @@
 		"allowSyntheticDefaultImports": true,
 		"removeComments": true,
 		"experimentalDecorators": true,
-		"noUnusedLocals": true
+		"noUnusedLocals": true,
+		"importHelpers": true
 	},
 	"include": [
 		"./src/views/*.tsx"
